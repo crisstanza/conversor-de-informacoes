@@ -44,7 +44,7 @@ public abstract class AMain {
 	}
 
 	private final boolean arquivoValido(final File arquivo) {
-		return !arquivo.getName().startsWith("_");
+		return !arquivo.getName().startsWith(".");
 	}
 
 	protected final PrintWriter getSaida(final String nome) throws IOException {

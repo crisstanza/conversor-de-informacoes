@@ -68,9 +68,9 @@ public final class Main extends AMain {
 		for (int i = 0; i < dados.size() && i < TAMANHO_LOTE; i++) {
 			dado = dados.get(i);
 			escritor.println("		{");
-			escritor.println("			_a: '" + dado.areas + "', _b: " + dado.id + ",");
-			escritor.println("			_d: '" + dado.titulo + "',");
-			escritor.println("			_e: '" + dado.autor + "', _f: '" + dado.coautores + "'");
+			escritor.println("			_a: '" + dado.tipo + "', _b: '" + dado.arquivo + "',");
+			escritor.println("			_c: '" + dado.titulo + "',");
+			escritor.println("			_d: '" + dado.autor + "', _e: '" + dado.coautores + "'");
 			escritor.println("		},");
 		}
 		escritor.println("	]");
@@ -101,30 +101,29 @@ public final class Main extends AMain {
 	}
 
 	private final boolean isValid(final String linha) {
-		return !linha.startsWith("\"Areas\";\"ID\";");
+		return Util.naoVazio(linha) && !linha.startsWith("\"Tipo\"	\"");
 	}
 
 	private final Dado getDado(final String linha) {
 		Dado dado = new Dado();
-		final String[] parts = linha.trim().split(";");
-		dado.areas = Util.trimQuotes(Util.fixJS(parts[0]));
-		dado.id = Util.trimQuotes(Util.fixJS(parts[1]));
-		// dado.quemSubmeteu = parts[2];
-		dado.titulo = Util.trimQuotes(Util.fixJS(parts[3]));
-		dado.autor = Util.trimQuotes(Util.fixJS(parts[4]));
-		dado.coautores = Util.trimQuotes(Util.fixJS(parts[5]));
-		// dado.status = parts[6];
+		final String[] parts = linha.trim().split("\t");
+		dado.tipo = Util.trimQuotes(Util.fixJS(parts[0])).substring(0, 1);
+		dado.arquivo = Util.trimQuotes(Util.fixJS(parts[1]));
+		dado.titulo = Util.trimQuotes(Util.fixJS(parts[2]));
+		dado.autor = Util.rightTrimComma(Util.trimQuotes(Util.fixJS(parts[3])));
+		dado.coautores = Util.trimQuotes(Util.fixJS(parts.length > 4 ? parts[4] : ""));
 		return dado;
 	}
 
+	/**
+	 * "Tipo" "nome arquivo" "Titulo Trabalho " "Autor Principal " "Coautor 1 "
+	 */
 	private final class Dado {
-		private String areas;
-		private String id;
-		// private String quemSubmeteu;
+		private String tipo;
+		private String arquivo;
 		private String titulo;
 		private String autor;
 		private String coautores;
-		// private String status;
 	}
 
 }

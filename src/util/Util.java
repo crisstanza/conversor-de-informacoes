@@ -369,7 +369,7 @@ public abstract class Util {
 		if (str.charAt(str.length() - 1) == '"') {
 			sb.deleteCharAt(str.length() - 1);
 		}
-		if (str.charAt(0) == '"') {
+		if (sb.length() > 0 && sb.charAt(0) == '"') {
 			sb.deleteCharAt(0);
 		}
 		return sb.toString();
@@ -377,6 +377,20 @@ public abstract class Util {
 
 	public static final String fixJS(final String str) {
 		return str.replaceAll("'", "\\\\'");
+	}
+
+	public static final String rightTrimComma(final String str) {
+		if (str == null) {
+			return null;
+		}
+		if (str.length() == 0) {
+			return str;
+		}
+		final StringBuilder sb = new StringBuilder(str);
+		if (str.charAt(str.length() - 1) == ';') {
+			sb.deleteCharAt(str.length() - 1);
+		}
+		return sb.toString();
 	}
 
 }
